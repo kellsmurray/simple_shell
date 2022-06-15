@@ -81,7 +81,6 @@ char **path_tokens;
 
 if (check_dir(inputs->tokens[0]))
 r = exec_cwd(inputs);
-
 else
 {
 path = find_path(inputs->env);
@@ -99,25 +98,20 @@ free(check);
 break;
 }
 }
-
 free(dup);
-
 if (path_tokens == NULL)
 {
 inputs->status = 127;
 _exit_(inputs);
 }
 }
-
 if (path == NULL || path_tokens[i] == NULL)
 {
 _error(inputs, ": not found\n");
 inputs->status = 127;
 }
-
 free(path_tokens);
 }
-
 if (r == 1)
 _exit_(inputs);
 }
@@ -130,7 +124,6 @@ _exit_(inputs);
 int exec_cwd(input_t *inputs)
 {
 pid_t child;
-
 if (access(inputs->tokens[0], F_OK) == 0)
 {
 if (access(inputs->tokens[0], X_OK) == 0)
@@ -143,7 +136,6 @@ if (child == 0)
 if (execve(inputs->tokens[0], inputs->tokens, inputs->env) == -1)
 _error(inputs, NULL);
 }
-
 else
 {
 wait(&inputs->status);
@@ -153,11 +145,9 @@ else if (WIFSIGNALED(inputs->status) && WTERMSIG(inputs->status) == SIGINT)
 inputs->status = 130;
 return (0);
 }
-
 inputs->status = 127;
 return (1);
 }
-
 else
 {
 _error(inputs, ": Permission denied\n");
@@ -165,7 +155,6 @@ inputs->status = 126;
 }
 return (0);
 }
-
 _error(inputs, ": not found\n");
 inputs->status = 127;
 return (0);
